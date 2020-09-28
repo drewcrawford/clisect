@@ -1,1 +1,2 @@
-Clisect.main()
+import clisectkit
+main()

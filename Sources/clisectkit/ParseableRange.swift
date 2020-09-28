@@ -7,7 +7,7 @@ enum RangeParseError: Error {
     case rangeOrderingError(String,String)
 }
 
-public protocol StringParseable {
+protocol StringParseable {
     init?<S>(_ text: S) where S : StringProtocol
 }
 
@@ -16,7 +16,7 @@ extension Double: StringParseable {}
 
 
 extension ClosedRange where Bound: FloatingPoint, Bound: StringParseable {
-    public init(parsing string: String) throws {
+    init(parsing string: String) throws {
         let separated = string.components(separatedBy: "...")
         if separated.isEmpty {
             throw RangeParseError.noElipsis(string)

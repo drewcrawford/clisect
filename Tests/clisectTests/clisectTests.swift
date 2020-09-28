@@ -2,31 +2,33 @@ import XCTest
 import class Foundation.Bundle
 
 final class clisectTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-
-        // Some of the APIs that we use below are available in macOS 10.13 and above.
-        guard #available(macOS 10.13, *) else {
-            return
-        }
+    func testSearch() throws {
 
         let fooBinary = productsDirectory.appendingPathComponent("clisect")
 
         let process = Process()
         process.executableURL = fooBinary
-
+        process.arguments = ["0...100"]
+        
+        let inputPipe = Pipe()
         let pipe = Pipe()
         process.standardOutput = pipe
+        process.standardInput = inputPipe
 
         try process.run()
+        inputPipe.fileHandleForWriting.write("l\n".data(using: .utf8)!) //50...100
+        inputPipe.fileHandleForWriting.write("u\n".data(using: .utf8)!) //50...75
+        inputPipe.fileHandleForWriting.write("q\n".data(using: .utf8)!)
+
         process.waitUntilExit()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)
-
-        XCTAssertEqual(output, "Hello, world!\n")
+        //we expect 3 prompts
+        let prompts = try XCTUnwrap(output?.components(separatedBy: "try: "))
+        XCTAssertEqual(prompts.count, 4)
+        XCTAssert(prompts.last?.hasPrefix("62.5") ?? false)
+        XCTAssertEqual(process.terminationStatus,0)
     }
 
     /// Returns path to the built products directory.
@@ -42,6 +44,6 @@ final class clisectTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testSearch", testSearch),
     ]
 }

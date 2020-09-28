@@ -11,7 +11,6 @@ let package = Package(
         .target(
             name: "clisect",
             dependencies: [
-                .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "clisectkit"),
             ]),
         .testTarget(
@@ -20,6 +19,7 @@ let package = Package(
         .target(
             name: "clisectkit",
             dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]),
         .testTarget(name: "clisectkitTests",
                     dependencies: [.target(name: "clisectkit")]),

@@ -1,6 +1,5 @@
 
 import ArgumentParser
-import clisectkit
 
 
 struct Clisect: ParsableCommand {
@@ -8,7 +7,12 @@ struct Clisect: ParsableCommand {
     var range: ClosedRange<Double>
     
     func run() throws {
-        print("Bisecting \(range)")
+        var s = CliSearch(search: Search(range: range))
+        s.go()
     }
     
+}
+
+public func main() {
+    Clisect.main()
 }
