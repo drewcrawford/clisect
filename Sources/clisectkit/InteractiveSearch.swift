@@ -59,6 +59,7 @@ struct CliSearch {
         print(IterationAction.menu(difference: search.difference))
         var nextAction: IterationAction? = nil
         while nextAction == nil {
+            print(">",terminator:"")
             nextAction = IterationAction(readLine(strippingNewline: true) ?? "")
             if nextAction == nil {
                 print(IterationAction.menu)
