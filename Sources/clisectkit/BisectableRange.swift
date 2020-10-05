@@ -16,6 +16,15 @@ extension FloatingPoint {
 }
 extension Double: BisectableBound {}
 extension Float: BisectableBound {}
+extension Int: BisectableBound {
+    static func difference(_ range: ClosedRange<Int>) -> Int {
+        return range.upperBound - range.lowerBound
+    }
+    
+    static func bisected(_ range: ClosedRange<Int>) -> Int {
+        (range.upperBound - range.lowerBound) / 2 + range.lowerBound
+    }
+}
 
 
 protocol BisectableRange {
