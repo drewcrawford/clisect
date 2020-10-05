@@ -2,16 +2,21 @@
 // ©2020 DrewCrawfordApps LLC
 
 import Foundation
-extension ClosedRange where Bound: AdditiveArithmetic {
-    var difference: Bound {
-        return upperBound - lowerBound
+protocol BisectableBound: Comparable {
+    static func difference(_ range: ClosedRange<Self>) -> Self
+    static func bisected(_ range: ClosedRange<Self>) -> Self
+}
+extension FloatingPoint {
+    static func difference(_ range: ClosedRange<Self>) -> Self {
+        return range.upperBound - range.lowerBound
+    }
+    static func bisected(_ range: ClosedRange<Self>) -> Self {
+        return (range.upperBound - range.lowerBound) / 2 + range.lowerBound
     }
 }
-extension ClosedRange where Bound: FloatingPoint {
-    var bisected: Bound {
-        (upperBound - lowerBound) / 2 + lowerBound
-    }
-}
+extension Double: BisectableBound {}
+extension Float: BisectableBound {}
+
 
 protocol BisectableRange {
     associatedtype Bound: CustomStringConvertible, Comparable
@@ -23,11 +28,20 @@ protocol BisectableRange {
 }
 
 
-extension ClosedRange : BisectableRange where Bound: FloatingPoint, Bound: CustomStringConvertible {
+extension ClosedRange : BisectableRange where Bound: BisectableBound, Bound: CustomStringConvertible {
+    var difference: Bound {
+        Bound.difference(self)
+    }
+    var bisected: Bound {
+        Bound.bisected(self)
+    }
+    
+    
     init(_ range: ClosedRange<Bound>) {
         self = range
     }
 }
+
 
 
 enum AnyBisectableRange {
