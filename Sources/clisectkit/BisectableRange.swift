@@ -5,6 +5,7 @@ import Foundation
 protocol BisectableBound: Comparable, ExpressibleByIntegerLiteral {
     static func difference(_ range: ClosedRange<Self>) -> Self
     static func bisected(_ range: ClosedRange<Self>) -> Self
+    static func isConsecutive(_ range: ClosedRange<Self>) -> Bool
     var nextUp: Self { get }
     var nextDown: Self { get }
 }
@@ -15,16 +16,21 @@ extension FloatingPoint {
     static func bisected(_ range: ClosedRange<Self>) -> Self {
         return (range.upperBound - range.lowerBound) / 2 + range.lowerBound
     }
+    static func isConsecutive(_ range: ClosedRange<Self>) -> Bool {
+        return range.lowerBound.nextUp == range.upperBound
+    }
 }
-extension Double: BisectableBound {}
 extension Float: BisectableBound {}
+extension Double: BisectableBound {}
 extension Int: BisectableBound {
     var nextUp: Int {
         self + 1
     }
-    
     var nextDown: Int {
         self - 1
+    }
+    static func isConsecutive(_ range: ClosedRange<Int>) -> Bool {
+        range.lowerBound + 1 == range.upperBound
     }
     
     static func difference(_ range: ClosedRange<Int>) -> Int {
@@ -44,7 +50,9 @@ protocol BisectableRange: Equatable {
     init(_ range: ClosedRange<Bound>)
     var upperBound: Bound { get }
     var lowerBound: Bound { get }
+    var isConsecutive: Bool { get }
 }
+
 
 
 extension ClosedRange : BisectableRange where Bound: BisectableBound, Bound: CustomStringConvertible {
@@ -54,7 +62,9 @@ extension ClosedRange : BisectableRange where Bound: BisectableBound, Bound: Cus
     var bisected: Bound {
         Bound.bisected(self)
     }
-    
+    var isConsecutive: Bool {
+        Bound.isConsecutive(self)
+    }
     
     init(_ range: ClosedRange<Bound>) {
         self = range

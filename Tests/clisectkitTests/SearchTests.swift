@@ -10,11 +10,12 @@ final class SearchTests: XCTestCase {
         XCTAssertEqual(s.difference,5)
         XCTAssertEqual(s.prompt,2)
         s.apply(result: .isLower)
-        XCTAssertEqual(s.range, 3...5)
-        XCTAssertEqual(s.prompt,4)
+        XCTAssertEqual(s.range, 2...5)
+        XCTAssertEqual(s.prompt,3)
         s.apply(result: .isUpper)
-        XCTAssertEqual(s.range, 3...3)
-        XCTAssertEqual(s.difference,0)
+        XCTAssertEqual(s.range, 2...3)
+        XCTAssertEqual(s.difference,1)
+        XCTAssert(s.range.isConsecutive)
     }
     
     func testSearchIntDiff() throws {
@@ -22,8 +23,8 @@ final class SearchTests: XCTestCase {
         XCTAssertEqual(s.difference,2)
         XCTAssertEqual(s.prompt, 13)
         s.apply(result: .isLower)
-        XCTAssertEqual(s.range, 14...14)
-        XCTAssertEqual(s.difference, 0)
+        XCTAssertEqual(s.range, 13...14)
+        XCTAssert(s.range.isConsecutive)
 
     }
     

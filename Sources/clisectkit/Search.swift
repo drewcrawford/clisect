@@ -17,12 +17,12 @@ struct Search<Range> where Range: BisectableRange {
         return range.difference
     }
     mutating func apply(result: IterationResult) {
-        assert(range.difference > 0,"Can't apply with 0 difference")
+        assert(!range.isConsecutive,"Range is consecutive; search is complete")
         switch result {
         case .isLower:
-            range = Range(prompt.nextUp...range.upperBound)
+            range = Range(prompt...range.upperBound)
         case .isUpper:
-            range = Range(range.lowerBound...prompt.nextDown)
+            range = Range(range.lowerBound...prompt)
         }
     }
 }

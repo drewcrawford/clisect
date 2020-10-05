@@ -45,9 +45,9 @@ final class clisectTests: XCTestCase {
 
         try process.run()
         //try: 12
-        inputPipe.fileHandleForWriting.write("l\n".data(using: .utf8)!) //13...15
-        //try: 14
-        inputPipe.fileHandleForWriting.write("u\n".data(using: .utf8)!) //13...13
+        inputPipe.fileHandleForWriting.write("l\n".data(using: .utf8)!) //12...15
+        //try: 13
+        inputPipe.fileHandleForWriting.write("u\n".data(using: .utf8)!) //12...13
 
         process.waitUntilExit()
 
@@ -56,7 +56,7 @@ final class clisectTests: XCTestCase {
         //we expect 2 prompts
         let prompts = try XCTUnwrap(output?.components(separatedBy: "try: "))
         XCTAssertEqual(prompts.count, 3)
-        XCTAssert(prompts.last?.hasPrefix("14") ?? false)
+        XCTAssert(prompts.last?.hasPrefix("13") ?? false)
         XCTAssertEqual(process.terminationStatus,0)
     }
 
