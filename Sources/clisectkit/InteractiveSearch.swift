@@ -54,6 +54,7 @@ struct CliSearch<Range: BisectableRange> {
     }
     
     private mutating func cliIteration() -> Bool {
+        guard search.difference != 0 else { return false }
         print("try: \(promptString)")
         print()
         print(IterationAction.menu(difference: search.difference))

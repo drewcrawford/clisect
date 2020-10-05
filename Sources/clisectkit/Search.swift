@@ -17,21 +17,12 @@ struct Search<Range> where Range: BisectableRange {
         return range.difference
     }
     mutating func apply(result: IterationResult) {
+        assert(range.difference > 0,"Can't apply with 0 difference")
         switch result {
         case .isLower:
-            if prompt == range.lowerBound {
-                self.range = Range(range.upperBound...range.upperBound)
-            }
-            else {
-                self.range = Range(prompt...range.upperBound)
-            }
+            range = Range(prompt.nextUp...range.upperBound)
         case .isUpper:
-            if prompt == range.upperBound {
-                self.range = Range(range.lowerBound...range.lowerBound)
-            }
-            else {
-                self.range = Range(range.lowerBound...prompt)
-            }
+            range = Range(range.lowerBound...prompt.nextDown)
         }
     }
 }

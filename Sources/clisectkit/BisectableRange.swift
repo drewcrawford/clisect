@@ -2,9 +2,11 @@
 // ©2020 DrewCrawfordApps LLC
 
 import Foundation
-protocol BisectableBound: Comparable {
+protocol BisectableBound: Comparable, ExpressibleByIntegerLiteral {
     static func difference(_ range: ClosedRange<Self>) -> Self
     static func bisected(_ range: ClosedRange<Self>) -> Self
+    var nextUp: Self { get }
+    var nextDown: Self { get }
 }
 extension FloatingPoint {
     static func difference(_ range: ClosedRange<Self>) -> Self {
@@ -17,8 +19,16 @@ extension FloatingPoint {
 extension Double: BisectableBound {}
 extension Float: BisectableBound {}
 extension Int: BisectableBound {
+    var nextUp: Int {
+        self + 1
+    }
+    
+    var nextDown: Int {
+        self - 1
+    }
+    
     static func difference(_ range: ClosedRange<Int>) -> Int {
-        return range.upperBound - range.lowerBound
+        range.upperBound - range.lowerBound
     }
     
     static func bisected(_ range: ClosedRange<Int>) -> Int {
@@ -27,8 +37,8 @@ extension Int: BisectableBound {
 }
 
 
-protocol BisectableRange {
-    associatedtype Bound: CustomStringConvertible, Comparable
+protocol BisectableRange: Equatable {
+    associatedtype Bound: CustomStringConvertible, BisectableBound
     var bisected: Bound { get }
     var difference: Bound { get }
     init(_ range: ClosedRange<Bound>)
