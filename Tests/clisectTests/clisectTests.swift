@@ -74,5 +74,6 @@ final class clisectTests: XCTestCase {
 
     static var allTests = [
         ("testSearch", testSearch),
+        ("testSearchInt",testSearchInt),
     ]
 }

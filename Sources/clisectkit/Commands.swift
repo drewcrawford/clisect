@@ -7,7 +7,7 @@ enum FormatType: ExpressibleByArgument,CaseIterable {
     init?(argument: String) {
         switch argument {
         case "double", "d": self = .double
-        case "int": self = .int
+        case "int","i": self = .int
         default: return nil
         }
     }
