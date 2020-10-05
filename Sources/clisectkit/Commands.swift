@@ -3,12 +3,15 @@ import ArgumentParser
 
 
 struct Clisect: ParsableCommand {
-    @Argument(help: "Range to bisect", transform: ClosedRange<Double>.init(parsing:))
-    var range: ClosedRange<Double>
+    @Argument(help: "Range to bisect", transform: AnyBisectableRange.init(parsing:))
+    var range: AnyBisectableRange
     
     func run() throws {
-        var s = CliSearch(search: Search(range: range))
-        s.go()
+        switch range {
+        case .double(let range):
+            var s = CliSearch(search: Search(range: range))
+            s.go()
+        }
     }
     
 }

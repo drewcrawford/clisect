@@ -12,14 +12,14 @@ enum IterationAction: CaseIterable {
         case .quit: return "q"
         }
     }
-    func menuDescription(difference: Double) -> String {
+    func menuDescription(difference: CustomStringConvertible) -> String {
         switch self {
         case .applyToLower: return "apply to lower"
         case .applyToUpper: return "apply to upper"
         case .quit: return "quit (difference: \(difference))"
         }
     }
-    static func menu(difference: Double) -> String {
+    static func menu(difference: CustomStringConvertible) -> String {
         var s = ""
         for item in Self.allCases {
             s += "\(item.shortcut): \(item.menuDescription(difference: difference))"
@@ -37,8 +37,8 @@ enum IterationAction: CaseIterable {
         return nil
     }
 }
-struct CliSearch {
-    var search: Search
+struct CliSearch<Range: BisectableRange> {
+    var search: Search<Range>
     
     var promptString: String {
         return "\(search.prompt)"
