@@ -12,10 +12,14 @@ protocol StringParseable {
 }
 
 extension Double: StringParseable {}
+extension Int: StringParseable {
+    init?<S>(_ text: S) where S : StringProtocol {
+        self.init(text,radix:10)
+    }
+}
 
 
-
-extension ClosedRange where Bound: FloatingPoint, Bound: StringParseable {
+extension ClosedRange where Bound: StringParseable {
     init(parsing string: String) throws {
         let separated = string.components(separatedBy: "...")
         if separated.isEmpty {
