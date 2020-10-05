@@ -19,9 +19,19 @@ struct Search<Range> where Range: BisectableRange {
     mutating func apply(result: IterationResult) {
         switch result {
         case .isLower:
-            range = Range(prompt...range.upperBound)
+            if prompt == range.lowerBound {
+                self.range = Range(range.upperBound...range.upperBound)
+            }
+            else {
+                self.range = Range(prompt...range.upperBound)
+            }
         case .isUpper:
-            range = Range(range.lowerBound...prompt)
+            if prompt == range.upperBound {
+                self.range = Range(range.lowerBound...range.lowerBound)
+            }
+            else {
+                self.range = Range(range.lowerBound...prompt)
+            }
         }
     }
 }

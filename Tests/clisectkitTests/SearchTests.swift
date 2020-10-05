@@ -17,8 +17,21 @@ final class SearchTests: XCTestCase {
         XCTAssertEqual(s.difference, 0)
     }
     
+    func testSearchIntDiff() throws {
+        var s = Search(range: 12...14)
+        XCTAssertEqual(s.difference,2)
+        s.apply(result: .isLower)
+        XCTAssertEqual(s.range, 13...14)
+        XCTAssertEqual(s.difference, 1)
+        s.apply(result: .isLower)
+        XCTAssertEqual(s.range, 14...14)
+        XCTAssertEqual(s.difference, 0)
+
+    }
+    
    
     static var allTests = [
         ("testSearchInt", testSearchInt),
+        ("testSearchIntDiff",testSearchIntDiff),
     ]
 }
